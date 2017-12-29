@@ -1,5 +1,5 @@
-
 $ErrorActionPreference = "Stop"
+
 function IsAdmin() {
 	<#
 	IsAdmin() - Returns $TRUE if the script is being run as an admin

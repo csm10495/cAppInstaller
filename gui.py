@@ -3,6 +3,7 @@ import sys
 
 # make sure we can get to ctk
 THIS_FOLDER = os.path.abspath(os.path.dirname(__file__))
+import pdb; pdb.set_trace()
 sys.path.append(os.path.join(THIS_FOLDER, 'cTk', 'ctk'))
 from ctk import *
 
@@ -35,9 +36,6 @@ APPS = {
 
 def prettyNameToCheckboxName(prettyName):
     return '_' + prettyName.replace(' ', '_SPACE_')
-
-def checkboxNameToPrettyName(checkboxName):
-    return checkboxName[1:].replace('_SPACE_', ' ')
 
 class Gui(CtkWindow):
     def __init__(self):
