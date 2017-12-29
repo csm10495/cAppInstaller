@@ -39,13 +39,24 @@ def prettyNameToCheckboxName(prettyName):
     return '_' + prettyName.replace(' ', '_SPACE_')
 
 def ensureHasChoco():
+    '''
+    by time this function ends, the system should have choco
+    '''
     try:
         subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True)
         print ("choco detected")
     except Exception as ex:
-        print (str(ex))
         print ("Installing choco")
         os.system(r'''@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"''')
+
+def getChoco():
+    '''
+    returns the location of the choco executable
+    '''
+    try:
+        return subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True).strip()
+    except:
+        return os.path.expandvars(r'%ALLUSERSPROFILE%\chocolatey\bin\choco')
 
 class Gui(CtkWindow):
     def __init__(self):
@@ -86,7 +97,7 @@ class Gui(CtkWindow):
         retList = []
         for checkbox in self._getAllCheckboxes():
             if checkbox.checked.get():
-                cmd = 'choco install %s' % APPS[checkbox.cget('text')]
+                cmd = '%s install %s -y' % (getChoco(), APPS[checkbox.cget('text')])
                 retList.append(cmd)
 
         return retList
