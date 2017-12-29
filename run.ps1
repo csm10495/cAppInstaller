@@ -48,9 +48,6 @@ if (IsAdmin) { # Make sure we have admin
     } else {
         Write-Output "Detected choco"
     } 
-
-    Write-Output "Turning off Global Confirmation in choco"
-    choco feature enable -n allowGlobalConfirmation
     
     if (-Not (HasPython)) {
         Write-Output "Installing Python"
