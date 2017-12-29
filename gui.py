@@ -1,9 +1,10 @@
+import ctypes
 import os
+import subprocess
 import sys
 
 # make sure we can get to ctk
 THIS_FOLDER = os.path.abspath(os.path.dirname(__file__))
-import pdb; pdb.set_trace()
 sys.path.append(os.path.join(THIS_FOLDER, 'cTk', 'ctk'))
 from ctk import *
 
@@ -36,6 +37,15 @@ APPS = {
 
 def prettyNameToCheckboxName(prettyName):
     return '_' + prettyName.replace(' ', '_SPACE_')
+
+def ensureHasChoco():
+    try:
+        subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True)
+        print ("choco detected")
+    except Exception as ex:
+        print (str(ex))
+        print ("Installing choco")
+        os.system(r'''@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"''')
 
 class Gui(CtkWindow):
     def __init__(self):
@@ -91,4 +101,8 @@ class Gui(CtkWindow):
             print ("Done")
 
 if __name__ == '__main__':
+    if not ctypes.windll.shell32.IsUserAnAdmin():
+        raise EnvironmentError("Please run as admin")
+
+    ensureHasChoco()
     g = Gui()
