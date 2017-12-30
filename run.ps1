@@ -51,7 +51,7 @@ if (IsAdmin) { # Make sure we have admin
     
     if (-Not (HasPython)) {
         Write-Output "Installing Python"
-        choco install python2 /InstallDir "C:\Python27"
+        choco install python2 /InstallDir "C:\Python27" -y
     } else {
         Write-Output "Detected Python"
     } 
