@@ -12,6 +12,7 @@ import time
 APPS = {
     # Pretty: Actual
     '7-Zip' : '7zip',
+    'Adobe Reader' : 'adobereader',
     'Audacity' : 'audacity',
     'Classic Shell' : 'classic-shell -installArgs ADDLOCAL=ClassicStartMenu',
     'CPU-Z' : 'cpu-z',
