@@ -26,6 +26,7 @@ APPS = {
     'Google Chrome': 'googlechrome',
     'GrepWin': 'grepwin',
     'HxD': 'hxd',
+    'Minecraft': 'minecraft',
     'Mp3tag' : 'mp3tag',
     'Notepad Plus Plus': 'notepadplusplus',
     'Path Copy Copy': 'path-copy-copy',
