@@ -13,6 +13,7 @@ APPS = {
     # Pretty: Actual
     '7-Zip' : '7zip',
     'Adobe Reader' : 'adobereader',
+    'API Monitor' : 'apimonitor',
     'Audacity' : 'audacity',
     'Classic Shell' : 'classic-shell -installArgs ADDLOCAL=ClassicStartMenu',
     'CPU-Z' : 'cpu-z',
