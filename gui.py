@@ -20,6 +20,7 @@ APPS = {
     'CrystalDiskInfo' : 'crystaldiskinfo',
     'CrystalDiskMark' : 'crystaldiskmark',
     'DebugView' : 'dbgview',
+    'Discord' : 'discord',
     'Filezilla' : 'filezilla',
     'Git' : 'git',
     'Git Extensions': 'gitextensions',
