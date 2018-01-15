@@ -8,7 +8,7 @@ import os
 import subprocess
 import sys
 import time
-    
+
 APPS = {
     # Pretty: Actual
     '7-Zip' : '7zip',
@@ -53,7 +53,7 @@ def ensureHasChoco():
     by time this function ends, the system should have choco
     '''
     try:
-        subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True).strip().encode()
+        subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True).strip()
         print ("choco detected")
     except Exception as ex:
         print ("Installing choco")
@@ -64,7 +64,7 @@ def getChoco():
     returns the location of the choco executable
     '''
     try:
-        return '\"%s\"' % subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True).strip().encode()
+        return '\"%s\"' % subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True).strip().decode()
     except:
         return os.path.expandvars('\"%ALLUSERSPROFILE%\chocolatey\bin\choco\"')
 
@@ -73,7 +73,7 @@ def getGit():
     returns the location of the git executable
     '''
     try:
-        return '\"%s\"' % subprocess.check_output('where git', stderr=subprocess.STDOUT, shell=True).strip().encode()
+        return '\"%s\"' % subprocess.check_output('where git', stderr=subprocess.STDOUT, shell=True).strip().decode()
     except:
         return os.path.expandvars('\"%PROGRAMFILES%/Git/cmd/git.exe\"')
 
@@ -106,6 +106,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(THIS_FOLDER, 'cTk', 'ctk'))
     try:
         from ctk import tk, CtkWindow, CtkFrame
+        from widgets import ScrollableText
     except ImportError:
         if '-n' not in sys.argv:
             print ("Had trouble finding ctk... will try to download it.")
@@ -154,6 +155,10 @@ if __name__ == '__main__':
             self.addWidget(CtkFrame, name='frameButtons', y=rowNum)
             self.frameButtons.addWidget(tk.Button, text="Install Selected", name='buttonInstall', command=self.installSelected, y=rowNum, x=1)
             self.frameButtons.addWidget(tk.Button, text="Select All", name='buttonSelectAll', command=self.selectAll, y=rowNum, x=0)
+            self.addWidget(ScrollableText, name='console', x=1, gridKwargs={"rowspan": 100, "sticky" : tk.NSEW})
+
+            self.expandRow(rowNum)
+            self.expandColumn(1)
             self.mainloop()
 
         def selectAll(self):
@@ -192,12 +197,28 @@ if __name__ == '__main__':
             installs all selected 
             '''
             installCommands = self._getInstallCommandList()
+
             with self.busyCursor():
                 for i in installCommands:
-                    print ("About to execute: %s" % i)
-                    os.system(i)
+                    self.console.appendText("\n -I- About to execute: %s \n" % i)
+                    self.systemCall(i)
 
-                print ("Done")
+                self.console.appendText('=' * 45 + "\n")
+                self.console.appendText(" \n-I - Done \n ")
+                self.console.appendText('=' * 45 + "\n")
+
+        def systemCall(self, cmd):
+            # redirect stdout to the console
+            fd = os.popen(cmd, 'r')
+            output = fd.read(1)
+            while output:
+                self.update_idletasks()
+                self.update()
+                self.console.appendText(output)
+                output = fd.read(1)
+
+            return fd.close()
+
 
     ensureHasChoco()
     g = Gui()
