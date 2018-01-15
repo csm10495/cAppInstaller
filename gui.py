@@ -202,25 +202,22 @@ if __name__ == '__main__':
 
             with self.busyCursor():
                 for i in installCommands:
-                    self.console.appendText("\n -I- About to execute: %s \n" % i)
+                    self.console.appendText("\n -I- About to execute: %s \n -I- Watch background window for progress \n" % i)
                     self.systemCall(i)
+                    self.update()
 
                 self.console.appendText('=' * 45 + "\n")
                 self.console.appendText(" \n-I - Done \n ")
                 self.console.appendText('=' * 45 + "\n")
 
         def systemCall(self, cmd):
-            # redirect stdout to the console
-            fd = os.popen(cmd, 'r')
-            output = fd.read(1)
-            while output:
-                self.update_idletasks()
-                self.update()
-                self.console.appendText(output)
-                output = fd.read(1)
-
-            return fd.close()
-
+            '''
+            makes a system call
+            '''
+            try:
+                return subprocess.check_call(cmd, shell=True)
+            except Exception as ex:
+                return ex.returncode
 
     ensureHasChoco()
     g = Gui()
