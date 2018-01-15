@@ -46,6 +46,7 @@ APPS = {
     'Wget' : 'wget',
     'WinDirStat': 'windirstat',
     'WinMerge': 'winmerge',
+    'Xming' : 'xming',
 }
 
 def ensureHasChoco():
