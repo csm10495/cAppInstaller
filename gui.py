@@ -37,6 +37,7 @@ APPS = {
     'Skype': 'skype',
     'Steam': 'steam',
     'Sudo': 'sudo',
+    'Teracopy': 'teracopy',
     'TortoiseHg': 'tortoisehg',
     'Transmission': 'transmission',
     'VirtualBox' : 'virtualbox',
@@ -49,6 +50,8 @@ APPS = {
     'WinMerge': 'winmerge',
     'Xming' : 'xming',
 }
+
+MAX_APP_PER_COLUMN = 15
 
 def ensureHasChoco():
     '''
@@ -143,10 +146,14 @@ if __name__ == '__main__':
             self.title("cAppInstaller")
 
             rowNum = 0
-            for prettyName in sorted(APPS.keys()):
+            colNum = 0
+            for idx, prettyName in enumerate(sorted(APPS.keys())):
+                if idx % MAX_APP_PER_COLUMN == 0 and idx != 0:
+                    colNum += 1
+
                 packageNameAndArgs = APPS[prettyName]
                 v = tk.IntVar()
-                self.addWidget(tk.Checkbutton, text=prettyName, name=prettyNameToCheckboxName(prettyName), y=rowNum, variable=v, 
+                self.addWidget(tk.Checkbutton, text=prettyName, name=prettyNameToCheckboxName(prettyName), y=rowNum % MAX_APP_PER_COLUMN, x=colNum, variable=v, 
                     gridKwargs={
                         'sticky':tk.W
                     }
@@ -154,13 +161,15 @@ if __name__ == '__main__':
                 getattr(self, prettyNameToCheckboxName(prettyName)).checked = v
                 rowNum += 1
 
+            colNum += 1
+
             self.addWidget(CtkFrame, name='frameButtons', y=rowNum)
             self.frameButtons.addWidget(tk.Button, text="Install Selected", name='buttonInstall', command=self.installSelected, y=rowNum, x=1)
             self.frameButtons.addWidget(tk.Button, text="Select All", name='buttonSelectAll', command=self.selectAll, y=rowNum, x=0)
-            self.addWidget(ScrollableText, name='console', x=1, gridKwargs={"rowspan": 100, "sticky" : tk.NSEW})
+            self.addWidget(ScrollableText, name='console', x=colNum, gridKwargs={"rowspan": 100, "sticky" : tk.NSEW})
 
             self.expandRow(rowNum)
-            self.expandColumn(1)
+            self.expandColumn(colNum)
             self.mainloop()
 
         def selectAll(self):
@@ -202,12 +211,12 @@ if __name__ == '__main__':
 
             with self.busyCursor():
                 for i in installCommands:
-                    self.console.appendText("\n -I- About to execute: %s \n -I- Watch background window for progress \n" % i)
+                    self.console.appendText("-I- About to execute: %s \n" % i)
                     self.systemCall(i)
                     self.update()
 
                 self.console.appendText('=' * 45 + "\n")
-                self.console.appendText(" \n-I - Done \n ")
+                self.console.appendText("-I - Done \n ")
                 self.console.appendText('=' * 45 + "\n")
 
         def systemCall(self, cmd):
