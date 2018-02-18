@@ -1,0 +1,19 @@
+install:
+   - cmd: git submodule update --init --recursive
+
+artifacts:
+  - path: _builds\*\Foo-*.tar.gz
+    name: Releases
+
+test_script:
+  - cmd: pyinstaller.exe gui.py --onefile -p "cTk/ctk/" --uac-admin
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: MkEQ0qlYuJ9QhRNCsXoGXjTZrp/qMOiVDREvSP1DjQ+wEe6K9LM1w3SynDwDB1PW
+  artifact: *.exe
+  draft: false
+  prerelease: false
+  on:
+    branch: master
