@@ -5,7 +5,7 @@ artifacts:
   - path: dist/*.exe
     name: Releases
 
-test_script:
+build_script:
   - cmd: pyinstaller.exe gui.py --onefile -p "cTk/ctk/" --uac-admin
 
 deploy:
