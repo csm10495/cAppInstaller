@@ -12,6 +12,7 @@ import time
 APPS = {
     # Pretty: Actual
     '7-Zip' : '7zip',
+    '8GadgetPack' : '8gadgetpack',
     'Adobe Reader' : 'adobereader',
     'API Monitor' : 'apimonitor',
     'Audacity' : 'audacity',
@@ -137,6 +138,69 @@ if __name__ == '__main__':
             print ("Not going to try to rerun self again!")
             raise 
 
+    class AppToInstallWidget(CtkFrame):
+        '''
+        each one of these is an app to install and a text for status
+        '''
+        def __init__(self, *args, **kwargs):
+            '''
+            initializer. kwargs has a prettyAppName for the name of the app to install
+            '''
+            self.prettyAppName = kwargs['prettyAppName']
+            del kwargs['prettyAppName']
+            CtkFrame.__init__(self, *args, **kwargs)
+            self.checkState = tk.IntVar()
+            self.addWidget(tk.Checkbutton, name='check', text=self.prettyAppName, variable=self.checkState, y=0, x=0,
+                    gridKwargs={
+                        'sticky':tk.W
+                    }
+            ) 
+
+            self.statusText = tk.StringVar()
+            self.addWidget(tk.Label, name="label", textvariable=self.statusText, y=0, x=1,
+                    gridKwargs={
+                        'sticky':tk.E
+                    }
+            ) 
+
+        def isChecked(self):
+            '''
+            returns True if the checkbox is checked
+            '''
+            return self.checkState.get()
+
+        def select(self):
+            '''
+            selects the checkbox
+            '''
+            self.check.select()
+
+        def deselect(self):
+            '''
+            deselects the checkbox
+            '''
+            self.check.deselect()
+
+        def getPrettyAppName(self):
+            '''
+            gets this app's pretty name
+            '''
+            return self.prettyAppName
+
+        def getStatusText(self):
+            '''
+            get the current status text
+            '''
+            return self.statusText.get()
+
+        def setStatusText(self, txt, color):
+            '''
+            sets the current status text and color
+            '''
+            self.statusText.set(txt)
+            self.label.configure(fg=color)
+            self.update()
+
     class Gui(CtkWindow):
         '''
         gui that displays all apps that we have the option of installing.
@@ -147,18 +211,18 @@ if __name__ == '__main__':
 
             rowNum = 0
             colNum = 0
+            self._appWidgets = []
             for idx, prettyName in enumerate(sorted(APPS.keys())):
                 if idx % MAX_APP_PER_COLUMN == 0 and idx != 0:
                     colNum += 1
 
-                packageNameAndArgs = APPS[prettyName]
-                v = tk.IntVar()
-                self.addWidget(tk.Checkbutton, text=prettyName, name=prettyNameToCheckboxName(prettyName), y=rowNum % MAX_APP_PER_COLUMN, x=colNum, variable=v, 
+                self.addWidget(AppToInstallWidget, name='tmp', y=rowNum % MAX_APP_PER_COLUMN, x=colNum, prettyAppName=prettyName,
                     gridKwargs={
                         'sticky':tk.W
                     }
                 )
-                getattr(self, prettyNameToCheckboxName(prettyName)).checked = v
+                self._appWidgets += [self.tmp]
+
                 rowNum += 1
 
             colNum += 1
@@ -176,44 +240,28 @@ if __name__ == '__main__':
             '''
             selects all checkboxes
             '''
-            for i in self._getAllCheckboxes():
+            for i in self._appWidgets:
                 i.select()
-
-        def _getAllCheckboxes(self):
-            '''
-            returns all checkbox objects
-            '''
-            checkboxes = []
-            for thing in dir(self):
-                thingAsObj = getattr(self, thing)
-                if isinstance(thingAsObj, tk.Checkbutton):   
-                    checkboxes.append(thingAsObj)
-
-            return checkboxes
-
-        def _getInstallCommandList(self):
-            '''
-            get list of commands to run to install the selected apps
-            '''
-            retList = []
-            for checkbox in self._getAllCheckboxes():
-                if checkbox.checked.get():
-                    cmd = '%s install %s -y' % (getChoco(), APPS[checkbox.cget('text')])
-                    retList.append(cmd)
-
-            return retList
 
         def installSelected(self):
             '''
             installs all selected 
             '''
-            installCommands = self._getInstallCommandList()
-
             with self.busyCursor():
-                for i in installCommands:
-                    self.console.appendText("-I- About to execute: %s \n" % i)
-                    self.systemCall(i)
-                    self.update()
+                for checkbox in self._appWidgets:
+                    if checkbox.isChecked():
+                        cmd = '%s install %s -y --ignorepackagecodes' % (getChoco(), APPS[checkbox.getPrettyAppName()])
+                        
+                        self.console.appendText("-I- About to execute: %s \n" % cmd)
+                        checkbox.setStatusText("In Progress", 'blue')
+                        
+                        if self.systemCall(cmd) == 0:
+                            checkbox.setStatusText("Success", 'green')
+                            checkbox.deselect() # deselect
+                        else:
+                            checkbox.setStatusText("Failure", 'red')
+                        
+                        self.update()
 
                 self.console.appendText('=' * 45 + "\n")
                 self.console.appendText("-I - Done \n ")
@@ -223,10 +271,7 @@ if __name__ == '__main__':
             '''
             makes a system call
             '''
-            try:
-                return subprocess.check_call(cmd, shell=True)
-            except Exception as ex:
-                return ex.returncode
+            return subprocess.call(cmd, shell=True)
 
     ensureHasChoco()
     g = Gui()
