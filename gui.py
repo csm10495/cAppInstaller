@@ -97,12 +97,6 @@ def getProxy():
         print ('-I- Could not find any proxy settings')
     return None
 
-def prettyNameToCheckboxName(prettyName):
-    '''
-    converts the pretty name to a variable name for the linked checkbox
-    '''
-    return '_' + prettyName.replace(' ', '_SPACE_')
-
 if __name__ == '__main__':
     if not ctypes.windll.shell32.IsUserAnAdmin():
         raise EnvironmentError("Please run as admin")
