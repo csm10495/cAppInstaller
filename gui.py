@@ -33,6 +33,7 @@ APPS = {
     'Notepad Plus Plus': 'notepadplusplus',
     'Path Copy Copy': 'path-copy-copy',
     'Process Explorer': 'procexp',
+    'PuTTY' : 'putty',
     'Python 2': 'python2 /InstallDir "C:\Python27"',
     'VNC Viewer': 'vnc-viewer',
     'Skype': 'skype',
