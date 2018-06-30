@@ -70,10 +70,10 @@ def getChoco():
     '''
     returns the location of the choco executable
     '''
-    try:
-        return '\"%s\"' % subprocess.check_output('where choco', stderr=subprocess.STDOUT, shell=True).strip().decode()
-    except:
-        return os.path.expandvars('\"%ALLUSERSPROFILE%\chocolatey\bin\choco\"')
+    choco = r"C:\ProgramData\chocolatey\choco.exe"
+    if not os.path.isfile(choco):
+        raise EnvironmentError("Cannot find choco!")
+    return choco
 
 def getGit():
     '''
@@ -100,6 +100,8 @@ def getProxy():
 
 if __name__ == '__main__':
     if not ctypes.windll.shell32.IsUserAnAdmin():
+        print("Please Re-run as admin")
+        os.system('pause')
         raise EnvironmentError("Please run as admin")
 
     # make sure we can get to ctk
