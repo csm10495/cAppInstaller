@@ -22,6 +22,7 @@ APPS = {
     'CrystalDiskMark' : 'crystaldiskmark',
     'DebugView' : 'dbgview',
     'Discord' : 'discord',
+    'Epic Games Launcher' : 'epicgameslauncher',
     'Filezilla' : 'filezilla',
     'Git' : 'git',
     'Git Extensions': 'gitextensions',
