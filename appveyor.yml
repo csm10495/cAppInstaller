@@ -7,7 +7,7 @@ artifacts:
 
 build_script:
   - cmd: C:/Python38/python -m pip install pyinstaller
-  - cmd: pyinstaller.exe gui.py --onefile -p "cTk/ctk/" --uac-admin
+  - cmd: C:/Python38/Scripts/pyinstaller.exe gui.py --onefile -p "cTk/ctk/" --uac-admin
 
 deploy:
   provider: GitHub
