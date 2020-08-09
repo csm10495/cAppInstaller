@@ -12,7 +12,7 @@ build_script:
 deploy:
   provider: GitHub
   auth_token:
-    secure: MkEQ0qlYuJ9QhRNCsXoGXjTZrp/qMOiVDREvSP1DjQ+wEe6K9LM1w3SynDwDB1PW
+    secure: PERK2LmRtPbgU6V1cL69AfLoMpyTsR9PogNG8UlXGMkNGHFlsIvDEaSy9yNOm4bb
   artifact: dist/gui.exe
   draft: false
   prerelease: false
