@@ -17,6 +17,7 @@ APPS = {
     'API Monitor' : 'apimonitor',
     'Audacity' : 'audacity',
     'Authy' : 'authy-desktop',
+    'BGInfo' : 'bginfo',
     'Classic Shell' : 'classic-shell -installArgs ADDLOCAL=ClassicStartMenu',
     'CPU-Z' : 'cpu-z',
     'CrystalDiskInfo' : 'crystaldiskinfo',
