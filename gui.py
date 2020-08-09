@@ -16,6 +16,7 @@ APPS = {
     'Adobe Reader' : 'adobereader',
     'API Monitor' : 'apimonitor',
     'Audacity' : 'audacity',
+    'Authy' : 'authy-desktop',
     'Classic Shell' : 'classic-shell -installArgs ADDLOCAL=ClassicStartMenu',
     'CPU-Z' : 'cpu-z',
     'CrystalDiskInfo' : 'crystaldiskinfo',
