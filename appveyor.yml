@@ -6,7 +6,7 @@ artifacts:
     name: Releases
 
 build_script:
-  - cmd: python -m pip install pyinstaller
+  - cmd: python3 -m pip install pyinstaller
   - cmd: pyinstaller.exe gui.py --onefile -p "cTk/ctk/" --uac-admin
 
 deploy:
