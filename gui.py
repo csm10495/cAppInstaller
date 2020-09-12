@@ -31,6 +31,7 @@ APPS = {
     'Google Chrome': 'googlechrome',
     'GrepWin': 'grepwin',
     'HxD': 'hxd',
+    'KiTTY' : 'kitty',
     'Logitech Gaming' : 'logitechgaming',
     'Minecraft': 'minecraft',
     'Mp3tag' : 'mp3tag',
