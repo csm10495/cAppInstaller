@@ -43,6 +43,7 @@ APPS = {
     'Python 3.7': 'python --version 3.7.0 --params "/InstallDir:"C:\Python37"',
     'Python 3.8': 'python --version 3.8.0 --params "/InstallDir:"C:\Python38"',
     'VNC Viewer': 'vnc-viewer',
+    'ScreenToGif': 'screentogif',
     'Skype': 'skype --version 7.41.0.10101',
     'Steam': 'steam',
     'Sudo': 'sudo',
