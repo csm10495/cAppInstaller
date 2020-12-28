@@ -40,7 +40,8 @@ APPS = {
     'Process Explorer': 'procexp',
     'PuTTY' : 'putty',
     'Python 2': 'python2 /InstallDir "C:\Python27"',
-    'Python 3': 'python --version 3.7.0 --params "/InstallDir:"C:\Python37"',
+    'Python 3.7': 'python --version 3.7.0 --params "/InstallDir:"C:\Python37"',
+    'Python 3.8': 'python --version 3.8.0 --params "/InstallDir:"C:\Python38"',
     'VNC Viewer': 'vnc-viewer',
     'Skype': 'skype --version 7.41.0.10101',
     'Steam': 'steam',
@@ -52,7 +53,10 @@ APPS = {
     'Visual Leak Detector' : 'visualleakdetector',
     'Visual Studio Code': 'visualstudiocode',
     'Visual Studio 2017 Community': 'visualstudio2017community visualstudio2017-workload-nativecrossplat visualstudio2017-workload-nativedesktop visualstudio2017-workload-universal windows-sdk-10.1',
+    'Visual Studio 2019 Community': 'visualstudio2019community visualstudio2019-workload-nativecrossplat visualstudio2019-workload-nativedesktop visualstudio2019-workload-universal windows-sdk-10.1',
+    'Visual Studio 2019 Enterprise': 'visualstudio2019enterprise visualstudio2019-workload-nativecrossplat visualstudio2019-workload-nativedesktop visualstudio2019-workload-universal windows-sdk-10.1',
     'VLC': 'vlc',
+    'Windows Terminal': 'microsoft-windows-terminal',
     'Wget' : 'wget',
     'WinDirStat': 'windirstat',
     'WinMerge': 'winmerge',
@@ -125,7 +129,7 @@ if __name__ == '__main__':
                 import winreg # py3
 
             ensureHasChoco()
-            # try to download ctk 
+            # try to download ctk
             os.system(getChoco() + " install git -y")
             proxy = getProxy()
 
@@ -139,7 +143,7 @@ if __name__ == '__main__':
             sys.exit(os.system('%s %s -n' % (sys.executable, __file__)))
         else:
             print ("Not going to try to rerun self again!")
-            raise 
+            raise
 
     class AppToInstallWidget(CtkFrame):
         '''
@@ -157,14 +161,14 @@ if __name__ == '__main__':
                     gridKwargs={
                         'sticky':tk.W
                     }
-            ) 
+            )
 
             self.statusText = tk.StringVar()
             self.addWidget(tk.Label, name="label", textvariable=self.statusText, y=0, x=1,
                     gridKwargs={
                         'sticky':tk.E
                     }
-            ) 
+            )
 
         def isChecked(self):
             '''
@@ -248,22 +252,22 @@ if __name__ == '__main__':
 
         def installSelected(self):
             '''
-            installs all selected 
+            installs all selected
             '''
             with self.busyCursor():
                 for checkbox in self._appWidgets:
                     if checkbox.isChecked():
                         cmd = '%s install %s -y --ignorepackagecodes' % (getChoco(), APPS[checkbox.getPrettyAppName()])
-                        
+
                         self.console.appendText("-I- About to execute: %s \n" % cmd)
                         checkbox.setStatusText("In Progress", 'blue')
-                        
+
                         if self.systemCall(cmd) == 0:
                             checkbox.setStatusText("Success", 'green')
                             checkbox.deselect() # deselect
                         else:
                             checkbox.setStatusText("Failure", 'red')
-                        
+
                         self.update()
 
                 self.console.appendText('=' * 45 + "\n")
