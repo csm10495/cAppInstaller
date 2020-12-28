@@ -6,7 +6,7 @@ artifacts:
     name: Releases
 
 build_script:
-  - cmd: C:/Python38/python -m pip install pyinstaller==3.1.1
+  - cmd: C:/Python38/python -m pip install pyinstaller==3.1.*
   - cmd: C:/Python38/Scripts/pyinstaller.exe gui.py --onefile -p "cTk/ctk/" --uac-admin
 
 deploy:
