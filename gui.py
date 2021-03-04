@@ -132,6 +132,10 @@ if __name__ == '__main__':
             ensureHasChoco()
             # try to download ctk
             os.system(getChoco() + " install git -y")
+            
+            # allow global confirmation
+            os.system(getChoco() + " feature enable -n=allowGlobalConfirmation -y")
+            
             proxy = getProxy()
 
             if proxy:
