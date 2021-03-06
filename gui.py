@@ -34,6 +34,7 @@ APPS = {
     'Logitech Gaming' : 'logitechgaming',
     'Minecraft': 'minecraft',
     'Mp3tag' : 'mp3tag',
+    'NoMachine': 'nomachine',
     'Notepad Plus Plus': 'notepadplusplus',
     'Open Shell (Classic Shell)': 'open-shell --params "/StartMenu"',
     'Path Copy Copy': 'path-copy-copy',
