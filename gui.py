@@ -29,6 +29,7 @@ APPS = {
     'Git Extensions': 'gitextensions',
     'Google Chrome': 'googlechrome',
     'GrepWin': 'grepwin',
+    'HWiNFO' : 'hwinfo',
     'HxD': 'hxd',
     'KiTTY' : 'kitty',
     'Logitech Gaming' : 'logitechgaming',
