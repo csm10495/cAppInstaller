@@ -32,6 +32,7 @@ APPS = {
     'HWiNFO' : 'hwinfo',
     'HxD': 'hxd',
     'KiTTY' : 'kitty',
+    'Link Shell Extension': 'linkshellextension',
     'Logitech Gaming' : 'logitechgaming',
     'Minecraft': 'minecraft',
     'Mp3tag' : 'mp3tag',
