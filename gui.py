@@ -7,6 +7,7 @@ import ctypes
 import os
 import subprocess
 import sys
+import tempfile
 import time
 
 APPS = {
@@ -68,6 +69,66 @@ APPS = {
     'WinMerge': 'winmerge',
     'Xming' : 'xming',
 }
+
+class MiscCommand:
+    def __init__(self, cmd):
+        self.cmd = cmd
+
+class RegistryInstallCommand(MiscCommand):
+    def __init__(self, reg_file_text):
+        self.reg_file_text = reg_file_text
+
+        temp_file = tempfile.NamedTemporaryFile().name + '.reg'
+        with open(temp_file, 'w') as f:
+            f.write(self.reg_file_text)
+
+        MiscCommand.__init__(self, 'reg import "%s"' % temp_file)
+
+SHELL_COMMANDS = {
+    'Add Admin Cmd Prompt via Shift/Right Click': RegistryInstallCommand('''Windows Registry Editor Version 5.00
+
+; Created by: Shawn Brink
+; Created on: August 10, 2016
+; Updated on: January 26, 2021
+; Tutorial: https://www.tenforums.com/tutorials/59686-open-command-window-here-administrator-add-windows-10-a.html
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenCmdHereAsAdmin]
+@="Open command window here as administrator"
+"Extended"=""
+"Icon"="imageres.dll,-5324"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenCmdHereAsAdmin\command]
+@="cmd /c echo|set/p=\"%L\"|powershell -NoP -W 1 -NonI -NoL \"SaPs 'cmd' -Args '/c \"\"\"cd /d',$([char]34+$Input+[char]34),'^&^& start /b cmd.exe\"\"\"' -Verb RunAs\""
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenCmdHereAsAdmin]
+@="Open command window here as administrator"
+"Extended"=""
+"Icon"="imageres.dll,-5324"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenCmdHereAsAdmin\command]
+@="cmd /c echo|set/p=\"%V\"|powershell -NoP -W 1 -NonI -NoL \"SaPs 'cmd' -Args '/c \"\"\"cd /d',$([char]34+$Input+[char]34),'^&^& start /b cmd.exe\"\"\"' -Verb RunAs\""
+
+[HKEY_CLASSES_ROOT\Drive\shell\OpenCmdHereAsAdmin]
+@="Open command window here as administrator"
+"Extended"=""
+"Icon"="imageres.dll,-5324"
+
+[HKEY_CLASSES_ROOT\Drive\shell\OpenCmdHereAsAdmin\command]
+@="cmd /c echo|set/p=\"%L\"|powershell -NoP -W 1 -NonI -NoL \"SaPs 'cmd' -Args '/c \"\"\"cd /d',$([char]34+$Input+[char]34),'^&^& start /b cmd.exe\"\"\"' -Verb RunAs\""
+
+[-HKEY_CLASSES_ROOT\LibraryFolder\background\shell\OpenCmdHereAsAdmin]
+
+
+; To allow mapped drives to be available in command prompt
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"EnableLinkedConnections"=dword:00000001
+
+''')
+}
+
+for key,value in SHELL_COMMANDS.items():
+    APPS[key] = value
+
 
 MAX_APP_PER_COLUMN = 15
 
@@ -137,10 +198,10 @@ if __name__ == '__main__':
             ensureHasChoco()
             # try to download ctk
             os.system(getChoco() + " install git -y")
-            
+
             # allow global confirmation
             os.system(getChoco() + " feature enable -n=allowGlobalConfirmation -y")
-            
+
             proxy = getProxy()
 
             if proxy:
@@ -218,6 +279,23 @@ if __name__ == '__main__':
             self.label.configure(fg=color)
             self.update()
 
+        def getInstallCommand(self):
+            '''
+            Gets the shell command to run
+            '''
+            return '%s install %s -y --ignorepackagecodes' % (getChoco(), APPS[self.getPrettyAppName()])
+
+    class MiscCommandToRunWidget(AppToInstallWidget):
+        '''
+        each one of these is a shell command to run
+        '''
+
+        def getInstallCommand(self):
+            '''
+            Gets the command to run
+            '''
+            return APPS[self.getPrettyAppName()].cmd
+
     class Gui(CtkWindow):
         '''
         gui that displays all apps that we have the option of installing.
@@ -233,11 +311,18 @@ if __name__ == '__main__':
                 if idx % MAX_APP_PER_COLUMN == 0 and idx != 0:
                     colNum += 1
 
-                self.addWidget(AppToInstallWidget, name='tmp', y=rowNum % MAX_APP_PER_COLUMN, x=colNum, prettyAppName=prettyName,
-                    gridKwargs={
-                        'sticky':tk.W
-                    }
-                )
+                if isinstance(APPS[prettyName], MiscCommand):
+                    self.addWidget(MiscCommandToRunWidget, name='tmp', y=rowNum % MAX_APP_PER_COLUMN, x=colNum, prettyAppName=prettyName,
+                        gridKwargs={
+                            'sticky':tk.W
+                        }
+                    )
+                else:
+                    self.addWidget(AppToInstallWidget, name='tmp', y=rowNum % MAX_APP_PER_COLUMN, x=colNum, prettyAppName=prettyName,
+                        gridKwargs={
+                            'sticky':tk.W
+                        }
+                    )
                 self._appWidgets += [self.tmp]
 
                 rowNum += 1
@@ -267,12 +352,18 @@ if __name__ == '__main__':
             with self.busyCursor():
                 for checkbox in self._appWidgets:
                     if checkbox.isChecked():
-                        cmd = '%s install %s -y --ignorepackagecodes' % (getChoco(), APPS[checkbox.getPrettyAppName()])
+                        cmd = checkbox.getInstallCommand()
 
                         self.console.appendText("-I- About to execute: %s \n" % cmd)
                         checkbox.setStatusText("In Progress", 'blue')
 
-                        if self.systemCall(cmd) == 0:
+                        # result should always be 0 on success
+                        if callable(cmd):
+                            result = cmd()
+                        else:
+                            result = self.systemCall(cmd)
+
+                        if result == 0:
                             checkbox.setStatusText("Success", 'green')
                             checkbox.deselect() # deselect
                         else:
