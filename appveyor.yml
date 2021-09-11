@@ -4,7 +4,7 @@ artifacts:
 
 build_script:
   - cmd: C:/Python38/python -m pip install setuptools --upgrade
-  - cmd: git clone https://github.com/pyinstaller/pyinstaller --recursive && cd pyinstaller && git checkout v4.5.1 && cd bootloader && C:/Python38/python waf distclean all && cd .. && C:/Python38/python -m pip install .
+  - cmd: git clone https://github.com/pyinstaller/pyinstaller --recursive && cd pyinstaller && git checkout v4.5.1 && cd bootloader && C:/Python38/python waf all && cd .. && C:/Python38/python -m pip install .
   - cmd: C:/Python38/python -m pip install .
   - cmd: C:/Python38/Scripts/pyinstaller.exe cappinstaller/__main__.py --onefile --uac-admin --noconsole -n gui
 
