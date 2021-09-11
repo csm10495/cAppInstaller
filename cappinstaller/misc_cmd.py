@@ -19,7 +19,7 @@ class MiscCommand:
         ''' cmd is a shell command to run '''
         self.cmd = cmd
 
-    def install(self, output_queue: queue.Queue):
+    def install(self, output_queue: queue.Queue) -> int:
         '''
         This is the function called by the GUI to install/run.
         '''
@@ -39,11 +39,35 @@ class RegistryInstallCommand(MiscCommand):
         pathlib.Path(temp_file).write_text(self.reg_file_text)
         MiscCommand.__init__(self, 'reg import "%s"' % temp_file)
 
+class SymlinkPython3ToPython3X(MiscCommand):
+    '''
+    A command to Symlink Python3 to Python3X'''
+    def __init__(self):
+        self.python_path = pathlib.Path('C:/Python3')
+
+    def get_latest_python_folder(self):
+        '''
+        Gets the latest version of Python 3 in C:/
+        '''
+        return sorted(list(pathlib.Path('C:/').glob("Python3*")))[-1]
+
+    def install(self, output_queue: queue.Queue) -> int:
+        '''
+        This is the function called by the GUI to symlink
+        C:/Python3 to C:/Python3X
+        '''
+        if self.python_path.is_symlink():
+            self.python_path.unlink()
+
+        latest_py = self.get_latest_python_folder()
+        output_queue.put_nowait([f'Symlinking: {self.python_path} -> {latest_py}'])
+        self.python_path.symlink_to(latest_py)
+        return 0
 
 # todo:
-# Symlink C:/Python to C:/Python3X
 # Add C:/Python/bin to PATH
-# Enable Windows Sandbox: powershell Enable-WindowsOptionalFeature -FeatureName "Containers-DisposableClientVM" -All -Online
 MISC_COMMANDS = {
-    'Add Admin Cmd Prompt via Shift/Right Click' : RegistryInstallCommand(ADD_ADMIN_CMD_PROMPT_VIA_SHIFT_RIGHT_CLICK_REG)
+    'Add Admin Cmd Prompt via Shift/Right Click' : RegistryInstallCommand(ADD_ADMIN_CMD_PROMPT_VIA_SHIFT_RIGHT_CLICK_REG),
+    'Symlink Python3 -> Python3X' : SymlinkPython3ToPython3X(),
+    'Add C:/Python3 to System PATH' : MiscCommand(f'setx /m PATH "C:\Python3;C:\Python3\Scripts;%PATH%"'),
 }

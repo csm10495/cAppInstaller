@@ -1,8 +1,10 @@
 '''
 Home to the GUI for cAppInstaller
 '''
+from inspect import trace
 import queue
 import time
+import traceback
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 import numpy as np
@@ -73,19 +75,25 @@ class cAppInstaller:
         output = self.window['Output']
 
         def _inner():
-            if tag == 'choco':
-                return Choco(key, output_queue).install()
-            elif tag == 'cmd':
-                obj = MISC_COMMANDS[key]
-                return obj.install(output_queue)
-            else:
-                raise ValueError(f"{tag} is not supported")
+            try:
+                if tag == 'choco':
+                    return Choco(key, output_queue).install()
+                elif tag == 'cmd':
+                    obj = MISC_COMMANDS[key]
+                    return obj.install(output_queue)
+                else:
+                    raise ValueError(f"{tag} is not supported")
+            except Exception as ex:
+                output_queue.put_nowait([f"Unhandled Exception: {ex}"])
+                output_queue.put_nowait([traceback.format_exc()])
+                return -1
 
         def xfer_from_queue_to_output():
             lines = output_queue.get_nowait()
             for line in lines:
                 output.print(line)
 
+        output.print(f"About to run: {tag} - {key}")
         with ThreadPoolExecutor(max_workers=1) as pool:
             result = pool.submit(_inner)
             try:
