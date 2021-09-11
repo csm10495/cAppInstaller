@@ -5,7 +5,7 @@ artifacts:
 build_script:
   - cmd: C:/Python38/python -m pip install pyinstaller
   - cmd: C:/Python38/python -m pip install .
-  - cmd: C:/Python38/Scripts/pyinstaller.exe gui.py --onefile --uac-admin --noconsole
+  - cmd: C:/Python38/Scripts/pyinstaller.exe cappinstaller/__main__.py --onefile --uac-admin --noconsole -n gui
 
 deploy:
   provider: GitHub
