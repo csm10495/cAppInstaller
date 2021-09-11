@@ -1,13 +1,11 @@
-install:
-   - cmd: git submodule update --init --recursive
-
 artifacts:
   - path: dist/*.exe
     name: Releases
 
 build_script:
-  - cmd: C:/Python37/python -m pip install pyinstaller==3.4.*
-  - cmd: C:/Python37/Scripts/pyinstaller.exe gui.py --onefile -p "cTk/ctk/" --uac-admin
+  - cmd: C:/Python38/python -m pip install pyinstaller
+  - cmd: C:/Python38/python -m pip install .
+  - cmd: C:/Python38/Scripts/pyinstaller.exe gui.py --onefile --uac-admin --noconsole
 
 deploy:
   provider: GitHub

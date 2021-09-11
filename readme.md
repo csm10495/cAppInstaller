@@ -1,7 +1,7 @@
 # cAppInstaller
-A simple GUI to install some apps on a new system.
+A simple GUI to install some apps (and configurations) on a new system.
 
 Can build gui.py as a Pyinstaller exe with:
 ```
-pyinstaller.exe .\gui.py --onefile -p "cTk/ctk/" --uac-admin
+pyinstaller cappinstaller/__main__.py --onefile --uac-admin --noconsole -n gui
 ```
