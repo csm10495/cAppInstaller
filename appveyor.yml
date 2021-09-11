@@ -3,8 +3,7 @@ artifacts:
     name: Releases
 
 build_script:
-  - cmd: C:/Python38/python -m pip install setuptools --upgrade
-  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\vcvars32.bat" && git clone https://github.com/pyinstaller/pyinstaller --recursive && cd pyinstaller && git checkout v4.5.1 && cd bootloader && C:/Python38/python waf all --target-arch=32bit && cd .. && C:/Python38/python -m pip install .
+  - cmd: git clone https://github.com/pyinstaller/pyinstaller --recursive && cd pyinstaller && git checkout v4.4 && cd bootloader && C:/Python38/python waf all --target-arch=32bit && cd .. && C:/Python38/python -m pip install .
   - cmd: C:/Python38/python -m pip install .
   - cmd: C:/Python38/Scripts/pyinstaller.exe cappinstaller/__main__.py --onefile --uac-admin --noconsole -n gui
 
