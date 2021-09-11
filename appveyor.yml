@@ -3,7 +3,7 @@ artifacts:
     name: Releases
 
 build_script:
-  - cmd: C:/Python38/python -m pip install pyinstaller==3.4.*
+  - cmd: C:/Python38/python -m pip install pyinstaller==4.3.*
   - cmd: C:/Python38/python -m pip install .
   - cmd: C:/Python38/Scripts/pyinstaller.exe cappinstaller/__main__.py --onefile --uac-admin --noconsole -n gui
 
