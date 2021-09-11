@@ -39,7 +39,7 @@ class cAppInstaller:
                         [sg.Frame('Configurations', cg2.get_list_of_list_of_checkboxes().tolist(), expand_x=True)]
                     ]
                 ),
-                sg.Multiline(key='Output', disabled=True, expand_x=True, expand_y=True, autoscroll=True, size=(100, 1))
+                sg.Multiline(key='Output', disabled=True, expand_x=True, expand_y=True, autoscroll=True, size=(100, 1), background_color=sg.theme_background_color(), text_color='white')
             ],
             [sg.Frame('Actions', [[sg.Button(button_text='Select All', key='select_all'), sg.Button(button_text='Install Selected', key='install_selected')]], expand_x=True)]
         ]
