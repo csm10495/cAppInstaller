@@ -48,7 +48,7 @@ class ComboboxGrid:
             max_display_name_length = len(max(list_of_str, key=lambda x: len(x) if x is not None else 0) or '')
             for idx, y in enumerate(list_of_str):
                 if y is not None:
-                    list_of_str[idx] = sg.Checkbox(key=f'{self.tag}_{y}', text=y, size=(max_display_name_length, 1))
+                    list_of_str[idx] = sg.Checkbox(key=f'{self.tag}_{y}', text=y, size=(max_display_name_length, 1), tooltip=f'{self.tag}: {y}')
                 else:
                     list_of_str[idx] = sg.Text()
             list_of_list_of_str[h_idx] = list_of_str
