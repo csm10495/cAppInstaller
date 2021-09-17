@@ -34,6 +34,7 @@ CHOCOLATEY_APPS = {
     'GrepWin': 'grepwin',
     'HWiNFO' : 'hwinfo',
     'HxD': 'hxd',
+    'Intel CPU Diagnostic ': 'intel-ipdt',
     'KiTTY' : 'kitty',
     'Link Shell Extension': 'linkshellextension',
     'Logitech Gaming' : 'logitechgaming',
