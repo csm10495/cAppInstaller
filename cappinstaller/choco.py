@@ -32,6 +32,7 @@ CHOCOLATEY_APPS = {
     'Git Extensions': 'gitextensions',
     'Google Chrome': 'googlechrome',
     'GrepWin': 'grepwin',
+    'GSmartControl': 'gsmartcontrol'
     'HWiNFO' : 'hwinfo',
     'HxD': 'hxd',
     'Intel CPU Diagnostic ': 'intel-ipdt',
@@ -54,6 +55,7 @@ CHOCOLATEY_APPS = {
     'Resource Hacker': 'reshack',
     'ScreenToGif': 'screentogif',
     'Skype': 'skype --version 7.41.0.10101',
+    'Smartmontools': 'smartmontools',
     'Steam': 'steam',
     'Sudo': 'sudo',
     'Teracopy': 'teracopy',
