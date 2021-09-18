@@ -71,6 +71,7 @@ CHOCOLATEY_APPS = {
     'VNC Viewer': 'vnc-viewer',
     'Windows Terminal': 'microsoft-windows-terminal',
     'Wget' : 'wget',
+    'WinDbg': 'windbg',
     'WinDirStat': 'windirstat',
     'WinMerge': 'winmerge',
     'Xming' : 'xming',
