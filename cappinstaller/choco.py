@@ -32,7 +32,7 @@ CHOCOLATEY_APPS = {
     'Git Extensions': 'gitextensions',
     'Google Chrome': 'googlechrome',
     'GrepWin': 'grepwin',
-    'GSmartControl': 'gsmartcontrol'
+    'GSmartControl': 'gsmartcontrol',
     'HWiNFO' : 'hwinfo',
     'HxD': 'hxd',
     'Intel CPU Diagnostic ': 'intel-ipdt',
