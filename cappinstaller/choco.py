@@ -41,6 +41,7 @@ CHOCOLATEY_APPS = {
     'Logitech Gaming' : 'logitechgaming',
     'Minecraft': 'minecraft',
     'Mp3tag' : 'mp3tag',
+    'Not Another PDF Scanner 2': 'naps2',
     'NoMachine': 'nomachine',
     'Notepad Plus Plus': 'notepadplusplus',
     'Open Shell (Classic Shell)': 'open-shell --params "/StartMenu"',
