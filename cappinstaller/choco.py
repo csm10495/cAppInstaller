@@ -44,6 +44,7 @@ CHOCOLATEY_APPS = {
     'Not Another PDF Scanner 2': 'naps2',
     'NoMachine': 'nomachine',
     'Notepad Plus Plus': 'notepadplusplus',
+    'OBS Studio': 'obs-studio',
     'Open Shell (Classic Shell)': 'open-shell --params "/StartMenu"',
     'Postman': 'postman',
     'Path Copy Copy': 'path-copy-copy',
