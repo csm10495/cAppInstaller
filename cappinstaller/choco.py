@@ -54,6 +54,7 @@ CHOCOLATEY_APPS = {
     'Python 3.7': 'python --version 3.7.0 --params "/InstallDir:C:/Python37"',
     'Python 3.8': 'python --version 3.8.0 --params "/InstallDir:C:/Python38"',
     'Python 3.9': 'python --version 3.9.7 --params "/InstallDir:C:/Python39"',
+    'Python 3.10': 'python3 --version 3.10.7 --override --installarguments "/quiet Include_debug=1 Include_symbols=1 Include_dev=1 InstallAllUsers=1 Include_launcher=1 Include_test=1 InstallAllUsers=1 SimpleInstall=1 TargetDir=C:\Python310 PrependPath=0"',
     'Resource Hacker': 'reshack',
     'ScreenToGif': 'screentogif',
     'Skype': 'skype --version 7.41.0.10101',
