@@ -50,7 +50,7 @@ class SymlinkPython3ToPython3X(MiscCommand):
         '''
         Gets the latest version of Python 3 in C:/
         '''
-        return sorted(list(pathlib.Path('C:/').glob("Python3*")))[-1]
+        return pathlib.Path('C:/Python' + str(sorted(int(str(s).split('Python')[-1]) for s in list(pathlib.Path('C:/').glob("Python3*")))[-1]))
 
     def install(self, output_queue: queue.Queue) -> int:
         '''
