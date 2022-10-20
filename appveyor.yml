@@ -3,7 +3,7 @@ artifacts:
     name: Releases
 
 build_script:
-  - cmd: set PYINSTALLER_COMPILE_BOOTLOADER=1 && pip install pyinstaller
+  - cmd: set PYINSTALLER_COMPILE_BOOTLOADER=1 && C:/Python38/python -m pip install pyinstaller
   - cmd: C:/Python38/python -m pip install .
   - cmd: C:/Python38/Scripts/pyinstaller.exe cappinstaller/__main__.py --onefile --uac-admin --noconsole -n gui
 
