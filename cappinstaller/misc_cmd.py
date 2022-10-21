@@ -71,5 +71,6 @@ MISC_COMMANDS = {
     f'Add Admin Cmd Prompt via Shift/Right Click' : RegistryInstallCommand(ADD_ADMIN_CMD_PROMPT_VIA_SHIFT_RIGHT_CLICK_REG),
     f'Symlink Python3 -> Python3X' : SymlinkPython3ToPython3X(),
     f'Add C:/Python3 to System PATH' : MiscCommand(f'setx /m PATH "C:\Python3;C:\Python3\Scripts;%PATH%"'),
+    f'Install ipython to C:/Python3' : MiscCommand(f'C:\Python3\Scripts\pip install ipython'),
     f'Chown C:/Python3 for {getpass.getuser()}' : MiscCommand(f'icacls C:/Python3 /t /q /grant "{getpass.getuser()}":(OI)(CI)F'),
 }
