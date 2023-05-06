@@ -81,6 +81,7 @@ CHOCOLATEY_APPS = {
     'WinDbg': 'windbg',
     'WinDirStat': 'windirstat',
     'WinMerge': 'winmerge',
+    'WizTree': 'wiztree',
     'Xming' : 'xming',
 }
 
