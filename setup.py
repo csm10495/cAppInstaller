@@ -18,5 +18,5 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     include_package_data = True,
-    install_requires=['PySimpleGUI @ git+https://github.com/csm10495/PySimpleGUI-4-foss@unicode-decode-error-workaround', 'numpy'],
+    install_requires=['PySimpleGUI-4-foss', 'numpy'],
 )
